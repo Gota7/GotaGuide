@@ -16,5 +16,5 @@ You need the classpath environment variable to be appended with a value. For lin
 If you can run `antlr4` or `java -jar /usr/local/lib/antlr-4.9.2-complete.jar` where the jar is the path to your jar file, you got ANTLR set up! If you can do `grun` or `java org.antlr.v4.runtime.misc.TestRig`, you can test your grammars too!
 
 ## Next
-Next thing to do is create our grammar for Toylet!
-[Creating The Grammar](grammar.md)
+Next thing to do is learn ANTLR4 syntax!
+[ANTLR4 Grammar](grammar.md)

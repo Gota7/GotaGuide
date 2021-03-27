@@ -40,7 +40,7 @@ javac *.java
 echo Running:
 grun Toylet init -gui $1
 ```
-Replace `$1` with `%~1` to get this to work on Windows. For this command, you may need to replace `antlr4` and `grun` with the complete counterparts on the previous page, as I had to do. Anyways, the first command converts your grammar to java files, the second one compiles it, the third one tells you the test program is running, and the last one runs through the Toylet grammar starting at the `init` rule with the GUI enabled. If you run the script with a file path as an argument, it will try to apply your grammar to that file, else it will let you type in whatever you want in the terminal to have it end with `Ctrl+D`.
+Replace `$1` with `%~1` to get this to work on Windows. For this command, you may need to replace `antlr4` and `grun` with the complete counterparts on the previous page, as I had to do. Anyways, the first command converts your grammar to java files, the second one compiles it, the third one tells you the test program is running, and the last one runs through the Toylet grammar starting at the `init` Rule with the GUI enabled. If you run the script with a file path as an argument, it will try to apply your grammar to that file, else it will let you type in whatever you want in the terminal to have it end with `Ctrl+D`.
 
 ## Test File
 `Test.toy` will be blank for now, but will have more and more code as we develop our language more.
@@ -60,7 +60,7 @@ grammar Toylet;
 Only do this once per file at the beginning, and that's about it!
 
 ### Syntax Rules
-ANTLR has 3 different types of structures that define the rules for your language: Fragments, Tokens, and Rules. But first, we need to break down a simple if statement to understand how they play into a language.
+ANTLR has 3 different types of structures that define the Rules for your language: Fragments, Tokens, and Rules. But first, we need to break down a simple if statement to understand how they play into a language.
 
 #### Tokens
 Consider the following C# code:
@@ -71,7 +71,7 @@ if (myVar == 45) {
 }
 ```
 
-The easiest thing to consider are the Tokens present. Tokens are the individual characters and groups of characters that form a part of the syntax. Ignoring whitespace, for the first line of code the Tokens are `if`, `(`, `myVar`, `==`, `45`, `)`, and `{` in that exact order. Notice that a token is not always a single character. It makes much more sense when you see it right? Now it's your turn! See if you can guess the Tokens in the 2nd, 3rd, and 4th lines!
+The easiest thing to consider are the Tokens present. Tokens are the individual characters and groups of characters that form a part of the syntax. Ignoring whitespace, for the first line of code the Tokens are `if`, `(`, `myVar`, `==`, `45`, `)`, and `{` in that exact order. Notice that a Token is not always a single character. It makes much more sense when you see it right? Now it's your turn! See if you can guess the Tokens in the 2nd, 3rd, and 4th lines!
 <details>
     <summary>2nd Line</summary>
     `otherVar`, `*=`, `1.23`, and ';'
@@ -87,7 +87,7 @@ The easiest thing to consider are the Tokens present. Tokens are the individual 
 Not too complicated I would imagine.
 
 #### Fragments
-Now you may have noticed that some tokens are hard to define. While you could easily define tokens such as `;`, `if`, or even `*=`, it is impossible to create every number or variable name imaginable. How could you define something such as `myVar1`, or `2.34`? Fragments are **varying** individual characters that make up a Token. For the number `2.34`, the Fragments would be `2`, `.`, `3`, and `4`. Since `2.34` is a number, and `myVar1` is a name and it is impossible to define every single combinations of them, they contain Fragments. However, items like `if` is a keyword, and it is possible to define tokens for every possible keyword, so it therefore has no Fragments. Now what would the Fragments be in `for`? Trick question! There are no Fragments, `for` is a keyword and is therefore a single token! Now it's your turn to figure out the individual Fragments!
+Now you may have noticed that some Tokens are hard to define. While you could easily define Tokens such as `;`, `if`, or even `*=`, it is impossible to create every number or variable name imaginable. How could you define something such as `myVar1`, or `2.34`? Fragments are **varying** individual characters that make up a Token. For the number `2.34`, the Fragments would be `2`, `.`, `3`, and `4`. Since `2.34` is a number, and `myVar1` is a name and it is impossible to define every single combinations of them, they contain Fragments. However, items like `if` is a keyword, and it is possible to define Tokens for every possible keyword, so it therefore has no Fragments. Now what would the Fragments be in `for`? Trick question! There are no Fragments, `for` is a keyword and is therefore a single Token! Now it's your turn to figure out the individual Fragments!
 <details>
     <summary>`45`</summary>
     `45` is a number, and it is impossible to define every possible number when defining a Token explicitly. This means it has the Fragments `4` and `5`.
@@ -110,7 +110,7 @@ if (myVar == 45) {
     doThing(otherVar);
 }
 ```
-Rules are declared in terms of Tokens (never Fragments), and are the most complicated part. They usually depend on other Rules to define. For example, let us look at the `if` statement in its entirety. We always start with an `if` Token, then a `(`, next another Rule that will result in a boolean value, followed by a `)`, then either a single code statement, or code nested inside of `{` and `}`. Notice that there are conditions in this alone. We could define our Rule as `if (conditionalExpression)` followed by either `codeStatement` or `{ anyNumberOfCodeStatements }`. In the example above, we know it is the 2nd outcome as there are curly brackets with multiple code statements inside. We will not bother to define a `conditionalExpression` or `codeStatement` rule yet, as they can become fairly complicated for this example. For now, try and see if you can define a Rule for each of the two lines of code inside the if statement in terms of Tokens or names of other rules. Make sure to label each part as either a Token or Rule.
+Rules are declared in terms of Tokens (never Fragments), and are the most complicated part. They usually depend on other Rules to define. For example, let us look at the `if` statement in its entirety. We always start with an `if` Token, then a `(`, next another Rule that will result in a boolean value, followed by a `)`, then either a single code statement, or code nested inside of `{` and `}`. Notice that there are conditions in this alone. We could define our Rule as `if (conditionalExpression)` followed by either `codeStatement` or `{ anyNumberOfCodeStatements }`. In the example above, we know it is the 2nd outcome as there are curly brackets with multiple code statements inside. We will not bother to define a `conditionalExpression` or `codeStatement` Rule yet, as they can become fairly complicated for this example. For now, try and see if you can define a Rule for each of the two lines of code inside the if statement in terms of Tokens or names of other Rules. Make sure to label each part as either a Token or Rule.
 <details>
     <summary>1st Line</summary>
     `variableName TOKEN` `assignmentOperator RULE` `valueExpression RULE` `; TOKEN` I know this seems like cheating, since there are only two Tokens (variable name and semicolon), but a lot of programming is indeed abstract. I know you could write variables a Rule since you could do `name.item`, but for now let's assume variable names are Tokens. Assignment Operator is a Rule since `*=` is a Token, but all the operators would make up a Rule.
@@ -183,7 +183,7 @@ my_rule
     :   NUMBER '+' | '-'? NUMBER
     ;
 ```
-Now the rule is completely different! It will either match a number followed by a `+` Token, or a number with an optional `-` token preceding it. It would match examples such as `1 +`, `- 456`, or `21`. Big difference!
+Now the Rule is completely different! It will either match a number followed by a `+` Token, or a number with an optional `-` Token preceding it. It would match examples such as `1 +`, `- 456`, or `21`. Big difference!
 
 #### At Least (+)
 What if you wanted to define you want *at least* an instance of something? While with this operator, you can! Consider the following Rule, assuming the Token `NUMBER` is defined, where `NUMBER` represents any valid decimal number:
@@ -192,16 +192,16 @@ my_rule
     :   NUMBER (('+' | '-') NUMBER)+
     ;
 ```
-Now this example has a lot of moving parts, but the beauty and usage of this is incredible! Now we can chain any amount of additions and subtractions with decimal numbers. For example, these examples will be matched: `3 + 99 - 12 + 456`, `3 - 11`, `930 - 12 + 4`. Notice that `3` will not be matched, as at least one addition or subtraction is needed by the rule. But what if we want it to be legal? Luckily, there is a rule just for that!
+Now this example has a lot of moving parts, but the beauty and usage of this is incredible! Now we can chain any amount of additions and subtractions with decimal numbers. For example, these examples will be matched: `3 + 99 - 12 + 456`, `3 - 11`, `930 - 12 + 4`. Notice that `3` will not be matched, as at least one addition or subtraction is needed by the Rule. But what if we want it to be legal? Luckily, there is an operator just for that!
 
 #### Any Amount (*)
-This operator allows you to have a certain sequence repeat any amount of times. With this, we can make a rule that can match any expression given with decimal characters and addition and subtraction, assuming you can not use parenthesis in the input sequence to parse. Consider the following Rule, assuming the Token `NUMBER` is defined, where `NUMBER` represents any valid decimal number:
+This operator allows you to have a certain sequence repeat any amount of times. With this, we can make a Rule that can match any expression given with decimal characters and addition and subtraction, assuming you can not use parenthesis in the input sequence to parse. Consider the following Rule, assuming the Token `NUMBER` is defined, where `NUMBER` represents any valid decimal number:
 ```js
 my_rule
     :   NUMBER (('+' | '-') NUMBER)*
     ;
 ```
-Notice how it is equivalent to the previous Rule, except for the fact that we now use the any `*` operator instead of `+`. This not only allows us to match any sequence the previous Rule does, but to also match single numbers such as `3` or `27`. Now the rule can handle a chain of additions and subtractions of any length!
+Notice how it is equivalent to the previous Rule, except for the fact that we now use the any `*` operator instead of `+`. This not only allows us to match any sequence the previous Rule does, but to also match single numbers such as `3` or `27`. Now the Rule can handle a chain of additions and subtractions of any length!
 
 #### Range ([])
 When you are defining Fragments, you will want to be able to define a range of characters. The following example shows how you can define a Fragment for a hexadecimal digit:
@@ -240,13 +240,13 @@ FLOAT
     |   '.' DecimalDigit+
     ;
 ```
-Now you are probably wondering, why can't we just have `DecimalDigit* '.' DecimalDigit*`? The answer to that is simple: it would allow us to match `.` which is definitely not a floating point number. With the way this is defined, you are forced to have a number before or after the decimal point. But why isn't there a way to match without the decimal point? The reason is that we will probably define a `NUMBER` token that allows any number. And so if you could just define a `NUMBER` the same way you could define a `FLOAT`, how would the parser know which one to choose? It wouldn't, which is why you can't do that! You could also define simple things such as keywords or operators with Tokens:
+Now you are probably wondering, why can't we just have `DecimalDigit* '.' DecimalDigit*`? The answer to that is simple: it would allow us to match `.` which is definitely not a floating point number. With the way this is defined, you are forced to have a number before or after the decimal point. But why isn't there a way to match without the decimal point? The reason is that we will probably define a `NUMBER` Token that allows any number. And so if you could just define a `NUMBER` the same way you could define a `FLOAT`, how would the parser know which one to choose? It wouldn't, which is why you can't do that! You could also define simple things such as keywords or operators with Tokens:
 ```cs
 OPERATOR_ASSIGN_MUL
     :   '*='
     ;
 ```
-Simple right? Now, you are probably thinking that we should not define every operator separately, and instead just define a single `ASSIGNMENT_OPERATOR` token. The problem with that logic is that an assignment operator in general is a Rule, not a Token. `+=` is a Token, but `+=` or `-=` is a Rule, since every possible assignment operator is not a Token. This may seem a bit hard to follow, but keeping this reasoning will prevent you from weird ANTLR bugs in the future, I'm speaking from experience. The rule of thumb is that you may define Tokens in terms of Fragments and raw characters like `'a$3'`, but do NOT define Tokens in terms of other Tokens!
+Simple right? Now, you are probably thinking that we should not define every operator separately, and instead just define a single `ASSIGNMENT_OPERATOR` Token. The problem with that logic is that an assignment operator in general is a Rule, not a Token. `+=` is a Token, but `+=` or `-=` is a Rule, since every possible assignment operator is not a Token. This may seem a bit hard to follow, but keeping this reasoning will prevent you from weird ANTLR bugs in the future, I'm speaking from experience. The rule of thumb is that you may define Tokens in terms of Fragments and raw characters like `'a$3'`, but do NOT define Tokens in terms of other Tokens!
 
 ### Declaring Rules In ANTLR
 Now this is the real meat of your parser. Fragments and Tokens may make up all the individual segments of your language, but Rules are how you define what is legal and illegal syntax. Here is how you define a Rule, with the name in all lowercase:
@@ -267,10 +267,10 @@ expression
 Noticed that this is defined from top to bottom in order to PEMDAS (excluding exponents). If multiple possible outcomes are taken like in `3 + 1 * 8 / (3 - 4)`, it will first do the expression in parenthesis, then the multiply operations, then the divide operations, then the addition operations, and the subtraction operations. This is done recursively, so the order of operations is preserved!
 
 ### ANTLR Structure
-Structuring in an ANTLR grammar file is a bit backwards, but it makes sense. Think of it as a pyramid. If a rule depends on another rule, try to put the rule that uses the other rule on top if possible. This means Fragments should be on the bottom, Tokens in the middle, and Rules on top. If you fail to go by this structure, you can run into some strange errors.
+Structuring in an ANTLR grammar file is a bit backwards, but it makes sense. Think of it as a pyramid. If a Rule depends on another Rule, try to put the Rule that uses the other Rule on top if possible. This means Fragments should be on the bottom, Tokens in the middle, and Rules on top. If you fail to go by this structure, you can run into some strange errors.
 
 ### Making A Simple Test
-Now I am sure all this talk about ANTLR has gotten you salivating on how to try it out for yourself. Luckily with the previous page, you have the hard part done already! For our simple test, put the following code in your `Toylet.g4` file:
+Now I am sure all this talk about ANTLR has gotten you salivating on how to try it out for yourself. Luckily with the setup earlier in this page, you have the hard part done already! For our simple test, put the following code in your `Toylet.g4` file:
 ```cs
 // Name of our grammar file.
 grammar Toylet;
@@ -282,19 +282,19 @@ init
 // Add more statements if you like!
 statement
     :   addition_string
-    ;   // Add more here with | and then your rule!
+    ;   // Add more here with | and then your Rule!
 
 // An addition statement string. This allows you to chain any amount of numbers in addition or subtraction, as long as the whole thing is followed by a semicolon.
 addition_string
     :   NUMBER (('+' | '-') NUMBER)* ';'
     ;
 
-// Number token.
+// Number Token.
 NUMBER
     :   DecimalDigit+
     ;
 
-// Simple decimal digit fragment,
+// Simple decimal digit Fragment,
 fragment DecimalDigit: [0-9];
 
 // Ignore whitespace and new lines.
@@ -321,7 +321,7 @@ my_rule:
 This is invalid ANTLR!
 
 #### Is Something Ambigious?
-Sometimes there will be some ambiguity as shown in the example above with operator prescedence. But whenever you have two different rules that match the same thing, or a rule that has the ability to match nothing, that is a problem. Assume with have the Fragment `DecDigit` defined, which represents any valid decimal digit:
+Sometimes there will be some ambiguity as shown in the example above with operator prescedence. But whenever you have two different Rules that match the same thing, or a Rule that has the ability to match nothing, that is a problem. Assume with have the Fragment `DecDigit` defined, which represents any valid decimal digit:
 ```cs
 NUMBER
     :   DecDigit*
