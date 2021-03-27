@@ -2,7 +2,7 @@
 Ever wanted to create your own programming language?
 
 ## Table Of Contents
-* [Index](index.md)
+* [Index](index.md) <- You are here.
 * [ANTLR4 Setup](antlrSetup.md)
 * [Creating The Grammar](grammar.md)
 

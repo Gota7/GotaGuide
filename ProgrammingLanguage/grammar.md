@@ -23,8 +23,8 @@ rm *.interp
 rm *.java
 rm *.tokens
 ```
-```
 Windows:
+```
 del *.class
 del *.interp
 del *.java
