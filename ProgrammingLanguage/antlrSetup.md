@@ -4,7 +4,7 @@ Ever wanted to create your own programming language?
 ## Table Of Contents
 * [Index](index.md)
 * [ANTLR4 Setup](antlrSetup.md) <- You are here.
-* [Creating The Grammar](grammar.md)
+* [ANTLR4 Grammar](grammar.md)
 
 ## Basic Setup
 Please don't use the default packages from package managers! First thing you need to do is download [here](https://www.antlr.org/download.html). You want to download the jar linked under "ANTLR tool and Java Target". You also need to have Java installed. I recommend copying it to a safe location, which I recommend `/usr/local/lib` for Linux. You run this command as `java -jar JAR_FILE_PATH`, which I will shorthand as `antlr4` for the rest of the tutorial. To get this shortcut to be `antlr4` on linux, edit `~/.bashrc`, put in the line `alias antlr4='java -jar /usr/local/lib/antlr-4.9.2-complete.jar'` where the path is to your jar file, which may be different from mine. Do `source ~/.bashrc` to refresh, and `antlr4` should be a recognized command!
