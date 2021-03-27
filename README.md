@@ -3,3 +3,6 @@ An accumulation of tech info I learned over the years for those who need it: htt
 
 ## General
 [Hex Editing](General/HexEditing.md)
+
+## Other Guides
+[How To Make A Programming Language](ProgrammingLanguage/index.md)
