@@ -321,7 +321,7 @@ my_rule:
 This is invalid ANTLR!
 
 #### Is Something Ambigious?
-Sometimes there will be some ambiguity as shown in the example above with operator prescedence. But whenever you have two different Rules that match the same thing, or a Rule that has the ability to match nothing, that is a problem. Assume with have the Fragment `DecDigit` defined, which represents any valid decimal digit:
+Sometimes there will be some ambiguity as shown in the example above with operator prescedence. But whenever you have two different Rules that match the same thing, or a Rule that has the ability to match nothing, that is a problem. Assume we have the Fragment `DecDigit` defined, which represents any valid decimal digit:
 ```cs
 NUMBER
     :   DecDigit*
@@ -334,7 +334,7 @@ NUMBER
     |   DecDigit+
     ;
 ```
-The two lines do the exact same thing! Now say we have three Rules that make sure of a properly defined `NUMBER` Token:
+The two lines do the exact same thing! Now say we have three Rules that make use of a properly defined `NUMBER` Token:
 ```js
 statement
     :   my_rule_1
@@ -352,7 +352,7 @@ my_rule_2
 This is bad, since if we try to parse `32 - 5` using the `statement` Rule, it will not know whether or not to use `my_rule_1`, or `my_rule_2`. This could lead to situations you do not want.
 
 #### Improper Usage Of Definitions
-If you are defining Tokens in terms of other defined Tokens, or using Fragments in Rules, you should not be doing that and may be causing a weird error.
+If you are defining Tokens in terms of other defined Tokens, or using Fragments in Rules, you should not be doing that and it may be causing a weird error.
 
 #### Improper Pyramid Structure
 Recall the section about ANTLR's structure. You want dependencies of definitions below the defintions when possible. This means Fragments on the bottom, Tokens in the middle, and Rules on the top. A Rule that uses another Rule is higher than the Rule being used, the same goes for Fragments. This should not be a situation with Tokens, since you should not be defining Tokens with other Tokens in the first place.
