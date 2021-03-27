@@ -60,7 +60,7 @@ grammar Toylet;
 Only do this once per file at the beginning, and that's about it!
 
 ### Syntax Rules
-ANTLR has 3 different types of structures that define the Rules for your language: Fragments, Tokens, and Rules. But first, we need to break down a simple if statement to understand how they play into a language.
+ANTLR has 3 different types of structures that define the Rules for your language: Fragments, Tokens, and Rules. But first, we need to break down a simple if statement to understand how they play into a language. I will do my best to try and explain how ANTLR4 works, but if my explanation is insufficient, I recommend the book by the creator himself: ***The Definitive ANTLR 4 Reference***
 
 #### Tokens
 Consider the following C# code:
