@@ -278,7 +278,7 @@ If you are stuck, go through one solution (do them in order) and see if it helps
 	    ;
 </details>
 <details>
-    <summary>Idenfifier Fragments</summary>
+    <summary>Identifier Fragments</summary>
     // Some basic rules on how we can compose an identifier.
     fragment IdentifierStart: '@' | '_' | [a-z] | [A-Z];
     fragment IdentifierOther: '_' | [a-z] | [A-Z] | DecDigit;
