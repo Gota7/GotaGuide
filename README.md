@@ -1,5 +1,5 @@
 # Gota's Guide
-An accumulation of tech info I learned over the years for those who need it: https://gota7.github.io/GotaGuide/
+Various tech guides for various things: https://gota7.github.io/GotaGuide/
 
 ## General
 * [Hex Editing](General/hexEditing.md)
