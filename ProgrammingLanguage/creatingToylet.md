@@ -176,8 +176,8 @@ I'm warning you, you are cheating yourself if you are blatantly copying and past
     // Make sure that a regular number has a suffix after it, and that any possibility can be potentially negative. The way this is defined means there has to be at least one digit before or after the decimal point. Remember that we can only use Fragments and not other Tokens.
     DECIMAL
 	    :	'-'? DecDigit+ ('d' | 'D')
-	    |	'-'? DecDigit+ '.' DecDigit*
-	    |	'-'? DecDigit* '.' DecDigit+
+	    |	'-'? DecDigit+ '.' DecDigit* ('d' | 'D')?
+	    |	'-'? DecDigit* '.' DecDigit+ ('d' | 'D')?
 	    ;
 </details>
 <details>
@@ -191,4 +191,149 @@ I'm warning you, you are cheating yourself if you are blatantly copying and past
 Hopefully you were able to figure out a solution on your own or were close to one of my solutions. If you didn't try, shame on you. Next we will work on variables.
 
 ## Variables
+At the moment, there are only 3 data types: Numbers, Decimals, and Strings. This means that you are only allowed to declare a variable belonging to one of these 3 types. In this next portion, we will define the rules for variable names, declaring variables, and assignment to them. You can delete everything in the `statement` rule, as well as the `number`, `decimal`, and `string` rules as those were only for testing.
+* At the moment, the only statement type we will support is a variable declaration.
+* A variable can not start with a decimal digit, but it can contain one in its name. Underscores are allowed anywhere, and you can start a name with the @ symbol, but nowhere else in the name. We will call any variable (or function name) an `IDENTIFIER` Token.
+* A variable can be declared by either a data type followed by a type, a name, and a semicolon; or by a type, a name, and then an assignment operator `=` with an expression following. Do not worry about function calls just yet, just make sure to follow PEMDAS. Keep in mind that anything added with a string should concat it, and not result in a generic number expression. Any number added with a decimal will make it a decimal expression. Also keep in mind that you should be able to cast something as a number or a decimal to automatically make it into an expression of the given cast.
+* Strings only support the `+` operator, while numbers and decimals support `+`, `-`, `*`, `/`. Numbers support more, such as `%`, `&`, `|`, `^`, `~`. Any expression can use parenthesis. If you do not know what one of these operators are, look up bitwise operators or operators in general. Bitwise operators have the presedence `~`, `&`, `^`, `|`, with all of them being below PEMDAS and having an individual priority, except for `~` which takes priority over EMDAS. Mod is on the same level of priority as multiply and divide.
+* Create a `variable_type` rule that can be any of the 3 primitive types, and a `variable_parameter` Rule that takes a `variable_type` and an `IDENTIFIER`. This will not only be useful for our variable declaration Rule, but for functions as well.
+* Make a different Rule for each of the different types of data expressions. This is due to the fact that you have different operators for say string than a decimal. And while normally you have to verify that options are valid in an expression at compile time, this allows us to know if an expression is invalid if it doesn't parse! Of course, you can't do this in most languages, but Toylet is an exception due to its limit amount of types. Even then, distinguishing between an expression of these 3 types would still be helpful and lessen work on making sure operations are valid.
+
+Hints: You should probably define a Fragment that can represent the first character of a string, and another that can represent another character. You should also define 3 different Rules for each of the different expressions that a data type can have. Remember that operator precedence is given by what is on top. Also make sure to keep the *is a* mindset, as a number expression can be a decimal expression, and both could be in a string expression. Also keep in mind that a variable declaration could either be just declaring a variable or also defining it too.
+
+### Test Bench
+Remember that you can comment out lines that have not been implemented yet! Run the following test input:
+```cs
+number one1 = 1;
+number _is_2;
+string @hello = 7.3 + " Hello " + " World " + (one1 + "!");
+decimal dec = 7 % (3 - 1) * 2; // Notice how this one is an int expression, but can still be assigned to a decimal value.
+number mystery = (number)(3.3d / 19) ^ 5;
+```
+
+You should never have any warnings or errors. Your output tree should look like this:
+
+![alt text](ToyletGrammar_002.png "This looks pretty confusing.")
+
+### Solutions
+If you are stuck, go through one solution (do them in order) and see if it helps you solve the other parts. Obviously put the Rules above any Tokens or Fragments, and Tokens over any Fragments. This section was probably one of the most confusing ones, but hopefully you were able to figure out most of it! Keep in mind that order matters with these, so anything that depends on another thing should be above the said thing.
+
+<details>
+    <summary>statement</summary>
+    // Pretty self explanatory, given all we can do is declare a variable.
+    statement
+        :   variable_declaration
+        ;
+</details>
+<details>
+    <summary>variable_declaration</summary>
+    // We can either just say a variable exists, or actually assign it a value.
+    variable_declaration
+	    :	variable_parameter OP_ASSIGN expression ';'
+	    |	variable_parameter ';'
+	    ;
+</details>
+<details>
+    <summary>variable_parameter</summary>
+    // When passing a parameter, we could only have a defined type and the name of it.
+    variable_parameter
+	    :	variable_type IDENTIFIER
+	    ;
+</details>
+<details>
+    <summary>Basic Tokens</summary>
+    // Operators.
+    OP_ASSIGN:		'=';
+    OP_MUL:			'*';
+    OP_DIV:			'/';
+    OP_MOD:			'%';
+    OP_ADD:			'+';
+    OP_SUB:			'-';
+    OP_NOT:			'~';
+    OP_AND:			'&';
+    OP_OR:			'|';
+    OP_XOR:			'^';
+
+    // Primitives.
+    PRIMITIVE_NUMBER:	'number';
+    PRIMITIVE_DECIMAL:	'decimal';
+    PRIMITIVE_STRING:	'string';
+</details>
+<details>
+    <summary>variable_type</summary>
+    // A type can only be one of our 3 main types.
+    variable_type
+	    :	PRIMITIVE_NUMBER
+	    |	PRIMITIVE_DECIMAL
+	    |	PRIMITIVE_STRING
+	    ;
+</details>
+<details>
+    <summary>expression</summary>
+    // Order is important here. We know one higher on this list could fit into another, so we don't want all expressions to be classified as string ones.
+    expression
+	    :	number_expression
+	    |	decimal_expression
+	    |	string_expression
+	    ;
+</details>
+<details>
+    <summary>Idenfifier Fragments</summary>
+    // Some basic rules on how we can compose an identifier.
+    fragment IdentifierStart: '@' | '_' | [a-z] | [A-Z];
+    fragment IdentifierOther: '_' | [a-z] | [A-Z] | DecDigit;
+</details>
+<details>
+    <summary>IDENTIFIER</summary>
+    // An identifier for a variable or function name. Not much of interest here, should be fairly straightforward.
+    IDENTIFIER
+	    :	IdentifierStart IdentifierOther*
+	    ;
+</details>
+<details>
+    <summary>number_expression</summary>
+    // This is the most complicated one of them all. Notice how it follows the order of operations, and that ones with equal prescedence are on the same line. Also notice how you are allowed to say a variable or number alone can make this expression. Casts are also satisfied.
+    number_expression
+	    :	'(' number_expression ')'
+	    |	'(' PRIMITIVE_NUMBER ')' expression
+	    |	OP_NOT number_expression
+	    |	number_expression (OP_MUL | OP_DIV | OP_MOD) number_expression
+	    |	number_expression (OP_ADD | OP_SUB) number_expression
+	    |	number_expression OP_AND number_expression
+	    |	number_expression OP_XOR number_expression
+	    |	number_expression OP_OR number_expression
+	    |	IDENTIFIER
+	    |	NUMBER
+	    ;
+</details>
+<details>
+    <summary>decimal_expression</summary>
+    // This is pretty close to the number expression, except for the fact that it has less operators, and can be a number expression if it needs to be.
+    decimal_expression
+	    :	'(' decimal_expression ')'
+	    |	'(' PRIMITIVE_DECIMAL ')' expression
+	    |	decimal_expression (OP_MUL | OP_DIV) decimal_expression
+	    |	decimal_expression (OP_ADD | OP_SUB) decimal_expression
+	    |	number_expression
+	    |	IDENTIFIER
+	    |	DECIMAL
+	    ;
+</details>
+<details>
+    <summary>string_expression</summary>
+    // This is one of the simpler ones. You can only add. Also notice that it can be a decimal or number expression if needed, but does not use the expression Rule. This is due to the fact doing so would cause an infinite loop of whether or not to classify something as a string expression or a generic expression.
+    string_expression
+        :	'(' string_expression ')'
+	    |	'(' PRIMITIVE_STRING ')' expression
+	    |	string_expression OP_ADD string_expression
+	    |	decimal_expression
+	    |	number_expression
+	    |	IDENTIFIER
+	    |	STRING
+	    ;
+</details>
+
+Yeah, this one was pretty hard. Although once you get this one done, it should hopefully get easier from here, or not. If you were able to figure this one out without too many problems, then you are doing really well. The next part is easier as it just basically extends off of what we have just established.
+
+## Functions And Assignments
 TODO!!!
