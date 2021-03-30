@@ -128,6 +128,31 @@ pub fn main() {
 ```
 Notice that since `dp2` is a double DP, the dereference operator `*` has to be used.
 
+### Null Data
+When data is no longer in scope, the DP to the data will be set to `null`. Trying to access or set data to a null value will cause an exception. You are also allowed to set a DP to null.
+```rust
+u32* dat -> null;
+u32* @dat2 = null;
+if (dat == dat2) {
+    println("Both are null!");
+}
+```
+Output:
+```
+Both are null!
+```
+
+### Skipping The Middle Man
+It's also possible to skip the middle man, and just have a DP refer to a newly created struct.
+```rust
+MyStruct* dat -> new MyStruct();
+```
+This is explained more when talking about how memory works in Asylum, but any item created this way is heap allocated and dies when there is no longer a DP to the data. Although you can allocate data on the stack like such:
+```rust
+MyStruct* data -> MyStruct();
+```
+This is the equivalent of making an instance of a struct, then a DP directly too it afterwards.
+
 ## Unsafe Diet Pointers
 By default, Asylum does not let you do any of the traditional pointer math that C and C++ allow. However, you can make DPs act like fully fledged pointers in an unsafe context:
 ```rust
