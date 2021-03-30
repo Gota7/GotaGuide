@@ -262,14 +262,12 @@ Of course we will replace `DEFINITION` with the actual way of defining a Token. 
 ```cs
 expression
     :   '(' expression ')'
-    |   expression OPERATOR_MUL expression
-    |   expression OPERATOR_DIV expression
-    |   expression OPERATOR_ADD expression
-    |   expression OPERATOR_SUB expression
+    |   expression (OPERATOR_MUL | OPERATOR_DIV) expression
+    |   expression (OPERATOR_ADD | OPERATOR_SUB) expression
     |   NUMBER
     ;
 ```
-Noticed that this is defined from top to bottom in order to PEMDAS (excluding exponents). If multiple possible outcomes are taken like in `3 + 1 * 8 / (3 - 4)`, it will first do the expression in parenthesis, then the multiply operations, then the divide operations, then the addition operations, and the subtraction operations. This is done recursively, so the order of operations is preserved!
+Noticed that this is defined from top to bottom in order to PEMDAS (excluding exponents). If multiple possible outcomes are taken like in `3 + 1 * 8 / (3 - 4)`, it will first do the expression in parenthesis, then the multiply operations or divide operations, then the addition or subtraction operations. This is done recursively, so the order of operations is preserved! Notice how `|` allows you to define operators with the same prescedence too!
 
 ### ANTLR Structure
 Structuring in an ANTLR grammar file is a bit backwards, but it makes sense. Think of it as a pyramid. If a Rule depends on another Rule, try to put the Rule that uses the other Rule on top if possible. This means Fragments should be on the bottom, Tokens in the middle, and Rules on top. If you fail to go by this structure, you can run into some strange errors.
