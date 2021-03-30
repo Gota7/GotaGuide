@@ -6,6 +6,10 @@ Ever wanted to create your own programming language?
 * [ANTLR4 Setup](antlrSetup.md)
 * [ANTLR4 Grammar](grammar.md) <- You are here.
 * [Creating Toylet](creatingToylet.md)
+* [Project Setup](projectSetup.md)
+* [LLVM Crashcourse](llvm.md)
+* [Compiling Toylet](compilingToylet.md)
+* [Epilogue](epilogue.md)
 
 ## Setting Up
 ![alt text](GrammarFileList.png "Folder Layout")

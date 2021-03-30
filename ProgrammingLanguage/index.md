@@ -6,6 +6,10 @@ Ever wanted to create your own programming language?
 * [ANTLR4 Setup](antlrSetup.md)
 * [ANTLR4 Grammar](grammar.md)
 * [Creating Toylet](creatingToylet.md)
+* [Project Setup](projectSetup.md)
+* [LLVM Crashcourse](llvm.md)
+* [Compiling Toylet](compilingToylet.md)
+* [Epilogue](epilogue.md)
 
 ## Introduction
 This is hard. Of course, it depends on how complex you want your language to be, but in general, this will not be a simple task and it may be confusing at some points. Hopefully with this guide, you'll have a better idea on how to implement your language. In this tutorial, I will be utilizing modern technologies such as ANTLR4 and LLVM at the time of writing, which luckily do a lot of the grunt work for us. So with that said, let's get started!
