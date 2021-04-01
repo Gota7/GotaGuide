@@ -339,5 +339,79 @@ If you are stuck, go through one solution (do them in order) and see if it helps
 
 Yeah, this one was pretty hard. Although once you get this one done, it should hopefully get easier from here, or not. If you were able to figure this one out without too many problems, then you are doing really well. The next part is easier as it just basically extends off of what we have just established.
 
-## Functions And Assignments
+## Functions, Assignments, Loops, And Ifs
+Now luckily stuff gets a little less tricky here, as we have the fundamental building blocks. Here is where we will be able to include function definitions and function calls. We will also start work on conditional statements, where any number but 0 is true, with 1 being the default true value.
+
+* A `function_definition` always starts with `func`, followed by an `IDENTIFIER` for the name of it. Then, there is a set of parenthesis `(` `)` with any number of arguments inside, each declared by a type and an `IDENTIFIER`. A function can optionally return a value by having `->` followed by a type after the parenthesis. After all of these, there is a set of curly brackets `{` `}` which have any number of code statements inside of them. Of course this means we need to be able to `return` a value.
+* An `assignment` is a `statement` that has an `IDENTIFIER`, an `assignment_operator`, and then an `expression` followed by a semicolon `;`. Expressions are allowed to call a function, which can have any number of `expression`s in the parameters. We also need to define operators such as `++` and `--`, `?` with `:`, and a special type of `number_expression` called a `boolean_expression` that uses a `comparison_operator`, or the `!` token. Also add the `false` and `true` keywords.
+* If statements that work like traditional if statements in the C languages, they could either have a body or a single statement after them. You can also use the keyword `elif`, and the keyword `else` is always the last in the chain and does not have a condition.
+* For and while loops that work like how they do in the C languages. Keep in mind that it is possible for them to either have code bodies or a single statement. We will also implement `loop` which loops forever, and `break`, which breaks out of a loop.
+
+### Test Bench
+Wow, we are using actual code now.
+
+```cs
+func doThing(number num, string str, decimal dec) {
+    number a = num + 5 * 3 - 1;
+    a += (number)dec;
+    println(str + a);
+}
+
+func add(number a, number b) -> number {
+    if (a > b) {
+        return a + b;
+    } elif (!(b <= a) && b) {
+        return a + b;
+    } else {
+        return a + b;
+    }
+}
+
+doThing(7, "Hello ", 3.3);
+for (number n = 0; n < 10; n++)
+    println(n);
+decimal d = 4;
+while (d < 12) {
+    d += ((d / 3) < 5) ? 1.0 : 2.0;
+}
+
+loop {
+    break;
+}
+```
+
+### Solutions
 TODO!!!
+
+## Custom Types
+Surprise! As the director, I decided at the last minute that custom types will be allowed, but very limited.
+
+* A custom type is declared with `struct` with an `IDENTIFER` after, then has a body. Inside the body, you can only define a type followed by an `IDENTIFIER`. A struct can not contain functions.
+* You declare a struct the same way any of the primitives are defined. You access a member by using a `.` after the name of the variable, then put the name of the property after the `.`. Default values can be initialized. Numbers default at 0, strings default at "", and decimals default at 0.
+* Variables that are structs or properties of structs can be used in expressions of any kind.
+
+### Test Bench
+```cs
+struct NameTag {
+    number id = 0 * 10;
+    string name = "John Doe";
+}
+
+struct Properties {
+    NameTag nameTag;
+    number classId;
+}
+
+Properties props;
+props.nameTag.id += props.classID * 3;
+println(props.nameTag.name);
+```
+
+### Solutions
+TODO!!!
+
+## Further Testing
+Conglaturation!!! You have successfully implemented the Toylet language grammer! Now you should be able to parse any Toylet code that is syntactically valid. Try it yourself, and see the pretty trees!
+
+## Next
+Next thing to do is to set up our C# project to use our ANTLR grammar, and to get ready for LLVM. If you thought this part was hard, well it only gets more confusing: [Project Setup](projectSetup.md)

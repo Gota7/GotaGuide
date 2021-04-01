@@ -147,7 +147,7 @@ It's also possible to skip the middle man, and just have a DP refer to a newly c
 ```rust
 MyStruct* dat -> new MyStruct();
 ```
-This is explained more when talking about how memory works in Asylum, but any item created this way is heap allocated and dies when there is no longer a DP to the data. Although you can allocate data on the stack like such:
+This is explained more when talking about how memory works in Asylum, but any item created this way is heap allocated and dies when the user frees it. Although you can allocate data on the stack like such:
 ```rust
 MyStruct* data -> MyStruct();
 ```
