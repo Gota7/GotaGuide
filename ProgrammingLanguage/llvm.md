@@ -52,11 +52,12 @@ Can be turned into this:
 goto notEqualTo3 if myNum != 3;
 equals3:
 myNum = myNum + 5;
+goto endIf;
 notEqualTo3:
 myNum = myNum - 7;
 endIf:
 ```
-Hey, you cheated, I see that `if`! But notice that the if makes a single comparison, and then has the program goto another location immediately if the condition is met. In assembly, you need some way to branch to a different place in code if a condition is or isn't met, so we are allowed to this in LLVM IR.
+Hey, you cheated, I see that `if`! But notice that the if makes a single comparison, and then has the program goto another location immediately if the condition is met. In assembly, you need some way to branch to a different place in code if a condition is or isn't met, so we are allowed to this in LLVM IR. Also notice the `goto` at the end of the if block. You don't want the code to execute the code that should happen in `else`, right?
 
 ##### Blocks
 Notice how we used named labels such as `equals3`? This is what is called a block in LLVM, which basically contains a bunch of code instructions. When you reach the end of a block, you fall into the next block. You can have the program jump to blocks dependent on a condition, or not. When we define code for a function, we will always use what we call the `entry` block at the beginning.
