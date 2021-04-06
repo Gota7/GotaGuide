@@ -343,9 +343,11 @@ Yeah, this one was pretty hard. Although once you get this one done, it should h
 Now luckily stuff gets a little less tricky here, as we have the fundamental building blocks. Here is where we will be able to include function definitions and function calls. We will also start work on conditional statements, where any number but 0 is true, with 1 being the default true value.
 
 * A `function_definition` always starts with `func`, followed by an `IDENTIFIER` for the name of it. Then, there is a set of parenthesis `(` `)` with any number of arguments inside, each declared by a type and an `IDENTIFIER`. A function can optionally return a value by having `->` followed by a type after the parenthesis. After all of these, there is a set of curly brackets `{` `}` which have any number of code statements inside of them. Of course this means we need to be able to `return` a value.
-* An `assignment` is a `statement` that has an `IDENTIFIER`, an `assignment_operator`, and then an `expression` followed by a semicolon `;`. Expressions are allowed to call a function, which can have any number of `expression`s in the parameters. We also need to define operators such as `++` and `--`, `?` with `:`, and a special type of `number_expression` called a `boolean_expression` that uses a `comparison_operator`, or the `!` token. Also add the `false` and `true` keywords.
+* An `assignment` is a `statement` that has an `IDENTIFIER`, an `assignment_operator`, and then an `expression` followed by a semicolon `;`. Expressions are allowed to call a function, which can have any number of `expression`s in the parameters. We also need to define operators such as `++` and `--`, `?` with `:`, and make the `expression` rule such it can use `comparison_operators` or the `!` token. Also add the `false` and `true` keywords.
 * If statements that work like traditional if statements in the C languages, they could either have a body or a single statement after them. You can also use the keyword `elif`, and the keyword `else` is always the last in the chain and does not have a condition.
 * For and while loops that work like how they do in the C languages. Keep in mind that it is possible for them to either have code bodies or a single statement. We will also implement `loop` which loops forever, and `break`, which breaks out of a loop.
+
+Hint: Make sure to loop up operator presedence! For our purposes, an expression be directly responsible for comparisons.
 
 ### Test Bench
 Wow, we are using actual code now.
@@ -380,8 +382,27 @@ loop {
 }
 ```
 
+TODO!!! TREE!!!
+
 ### Solutions
-TODO!!!
+This is the big one, where we are making the major points of our language. You may have to think critically about how to define some of these grammars.
+
+<details>
+    <summary>statement</summary>
+    // A lot of new stuff!
+    statement
+        :   variable_declaration
+        |	variable_assignment
+        |	function_definition
+        |	function_call
+        |	if_statement
+        |	for_loop
+        |	while_loop
+        |	loop
+        |	return_statement
+        |	break_statement
+        ;
+</details>
 
 ## Custom Types
 Surprise! As the director, I decided at the last minute that custom types will be allowed, but very limited.
@@ -391,6 +412,8 @@ Surprise! As the director, I decided at the last minute that custom types will b
 * Variables that are structs or properties of structs can be used in expressions of any kind.
 
 ### Test Bench
+Not nearly as much practice code this time, this is the home stretch!
+
 ```cs
 struct NameTag {
     number id = 0 * 10;
@@ -406,9 +429,63 @@ Properties props;
 props.nameTag.id += props.classID * 3;
 println(props.nameTag.name);
 ```
+You should never have any warnings or errors. Your tree will look like this:
+
+![alt text](ToyletGrammar_004.png "It's all coming together.")
+
+If it matches, you did it!
 
 ### Solutions
-TODO!!!
+Despite this last minute addition, there actually was not much more to add. Most of it was just slight tweaks of existing rules.
+
+<details>
+    <summary>statement</summary>
+    // Represents a generic statement.
+    statement
+        :   variable_declaration
+        |	variable_assignment
+        |	function_definition
+        |	function_call
+        |	struct_definition
+        |	if_statement
+        |	for_loop
+        |	while_loop
+        |	loop
+        |	return_statement
+        |	break_statement
+        ;
+</details>
+<details>
+    <summary>struct_definition</summary>
+    // All we need to do is make it so we can declare any amount of variables in a body!
+    struct_definition
+	    :	STRUCT IDENTIFIER '{' variable_declaration* '}'
+	    ;
+</details>
+<details>
+    <summary>variable_assignment</summary>
+    // Now we can do any amount of properties.
+    variable_assignment
+	    :	IDENTIFIER ('.' IDENTIFIER)* assignment_operators expression ';'
+	    ;
+</details>
+<details>
+    <summary>variable_type</summary>
+    // An identifier is a valid type now.
+    variable_type
+	    :	PRIMITIVE_NUMBER
+	    |	PRIMITIVE_DECIMAL
+	    |	PRIMITIVE_STRING
+	    |	IDENTIFIER
+	    ;
+</details>
+<details>
+    <summary>Primitive Expressions</summary>
+    // Simply replace IDENTIFIER with this for the string, number, and decimal expressions to allow accessing properties.
+    IDENTIFIER ('.' IDENTIFIER)*
+</details>
+
+Hopefully this last part was the home stretch. It has been quite the journey developing the grammar, but it is now over.
 
 ## Further Testing
 Conglaturation!!! You have successfully implemented the Toylet language grammer! Now you should be able to parse any Toylet code that is syntactically valid. Try it yourself, and see the pretty trees!
