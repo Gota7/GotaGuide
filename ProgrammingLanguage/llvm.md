@@ -149,3 +149,60 @@ What, none of this makes sense? It may seem that this has nothing to do with wri
 
 ## Enough With The Rules, Let's See Some Code!
 TODO!!!
+
+## Multiple Files
+TODO!!!
+
+### The Compilation Script
+We have LLVM bitcode now, so what? The great news is that the clang compiler can automatically convert this into an executeable! Simply use the command `clang HelloWorld.bc -o HelloWorld.elf` (or exe for Windows), and you should be able to get a program you can run! You can also add the `-static` flag to compile it to not use any external dependencies.
+
+## Bare Metal Example
+If you are like me, you may wonder how to use LLVM to develop an operating system, or without any dependencies on a bare metal machine. Since the program we write is to run on a machine with no software other than the BIOS, we can not use any external libraries, including the standard library. Luckily, this is more than possible. One thing you may not know about a program is that `main` is not the main method, `_start` is. This is actually abstracted with the standard library, so we must provide our own `_start` function when compiling for a bare metal target. For this example, I'm going to write an infinite loop as our operating system as a hello world example is more complicated and requires knowledge of operating system development. A fun challenge would be to figure out how to make this program in the LLVM builder yourself, but I'm sure you are tired of quizzes like this from the grammar section, so I'll just give you the code.
+
+```cs
+LLVMModuleRef mod = LLVM.ModuleCreateWithName("TestMod");
+LLVMBuilderRef builder = LLVM.CreateBuilder();
+LLVMValueRef start = LLVM.AddFunction(mod, "_start", LLVM.FunctionType(LLVM.VoidType(), new LLVMTypeRef[] {}, false));
+LLVMBasicBlockRef entry = LLVM.AppendBasicBlock(start, "entry");
+LLVM.PositionBuilderAtEnd(builder, entry);
+LLVMValueRef vga = LLVM.ConstIntToPtr(LLVM.ConstInt(LLVM.Int32Type(), 0xb8000, false), LLVM.PointerType(LLVM.Int8Type(), 0));
+LLVM.BuildStore(builder, LLVM.ConstInt(LLVM.Int8Type(), '7', false), vga);
+LLVM.BuildRetVoid(builder);
+LLVM.WriteBitcodeToFile(mod, "TestMod.bc");
+```
+
+Most of it makes sense, just a single `_start` function with its entrypoint and returning nothing. But what is interesting are the lines that create the `vga` variable and the store instruction builder after. On PCs, the VGA buffer (screen) is at position 0xb8000 in memory. Meaning, if we write a `7` to that address, we will write a `7` on the top left of the screen.
+
+### Compiling Bitcode For Bare Metal
+When compiling for another target, you use what is called a target triple. Since I am targetting an x86_64 target, my flag is `-target x86_64-pc-none-eabi`. For a full list of target triples, see this page [here](https://llvm.org/doxygen/classllvm_1_1Triple.html). This [page](https://clang.llvm.org/docs/CrossCompilation.html) is also helpful. Since we want this to not depend on any other dependencies for obvious reasons, we need to add the `-static` flag. The final flag is the most important, as it tells the compiler we don't want the standard library (since it doesn't exist for our bare metal platform) `-nostdlib`. My full command is `clang TestMod.bc -o TestMod.elf -target x86_64-pc-none-eabi -nostdlib -static`. You can actually run this ELF file just fine on Linux, it will be an infinite loop that does nothing, but you can do it if you please.
+
+![alt text](BareMetalCode.png "Wow, much code.")
+
+If you look at the code that is actually compiled in the picture above, you can see all it compiles to is a single jump command that causes an infinite loop. In my case, the ELF file is 9,000 bytes, which is a lot of overhead for one little instruction.
+
+### Setting Up The Project
+I did find [this](https://github.com/cfenollosa/os-tutorial) mystical guide, which was the holy grail of figuring out how to get our LLVM code running on the bare metal, and I highly recommend it if you want to get into OS development. In the same folder as your `.bc` file, make a folder called `OS`, then place [this](boot.tar.gz) folder in it, which has some code I stole from the guide and slighly tweaked (In the OS folder, there should be a boot folder with a bunch of ASM files).
+
+### Complete Boot Script
+Now it is time for the final script. You will need QEMU and nasm installed. This assumes you are in Linux, and you may need to tweak this for you.
+
+```sh
+clang TestMod.bc -o TestMod.elf -target x86_64-pc-none-eabi -nostdlib -static
+cp TestMod.elf OS/TestMod.elf
+cd OS
+nasm -f elf64 boot/kernel_entry.asm -o Entry.o
+ld Entry.o TestMod.elf -Ttext 0x1000 --oformat binary -o TestMod.bin
+nasm -f bin boot/bootsect.asm -o Loader.bin
+cat Loader.bin TestMod.bin > BOOT.bin
+qemu-system-x86_64 -fda BOOT.bin
+cd ..
+```
+
+The first line makes an ELF from our bitcode. The 2nd one copies to the OS folder, we then cd to it for convenience. We then assembly a way to call the `_start` function in our ELF. We then link it with our ELF, but export it as binary as we only care about the code inside (and also set the memory address to a constant so we can manage loading it). We then compile the bootsector separately into its own bin file. We then merge the bin files together, and run it with QEMU! If it works, you should see a `7` on the top left of your screen like this:
+
+![alt text](BareMetalTest.png "It works!")
+
+It's not much, but from there you can theoretically build an entire operating system using your custom language!
+
+## Cross Compilation
+TODO!!!
