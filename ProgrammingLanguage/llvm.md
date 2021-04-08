@@ -223,3 +223,40 @@ What if you wanted to compile to another platform without the hassle? At the mom
 
 ### The Other Way
 We are currently forgetting the fact that LLVM creates *bitcode* which is only as platform dependent as the functions it uses. Any platform LLVM supports can convert this bitcode to assembly and run it. But wait, we don't want the user to run raw assembly! But LLVM has this tool called *lli* which can run an LLVM bitcode file, much like how Java and C# and ran in a virtual machine: it uses a JIT (Just In Time) compiler to convert LLVM instructions into raw machine code you can execute. So if we were to have this *lli* tool on the target machine, and just give the end user an executable that simply calls it to run our `.bc` file, we are good to go! For more information and targets, check out my github repo [here](https://github.com/Gota7/LLVM-Invoker). This allows us to be able to instantly run our code on any platform without any cross compilation! The only catch is you can only use functions available for the target system.
+
+## Comparison
+A comparison summarizing the different methods of compiling a program with LLVM.
+
+### Compilation Modes
+This covers whether or not an executable is static or dynamically compiled and linked.
+
+#### Dynamic Compilation (Default)
+* Will work on the developer's computer, but may not work on others.
+* End user must have all the external libraries the program used installed.
+* Is fairly lightweight in distributable size.
+
+#### Static Compilation (-static Flag)
+* Will work on other systems regardless of what they have installed.
+* Has a larget distributable size.
+
+### Targetting Method
+And of course there are different ways to target platforms. This is used in Tandem with the compilation mode.
+
+#### Default (Host)
+* Will work on the platform the developer is compiling on, and all other machines of the same platform.
+* Requires multiple devices or virtual machines to support other targets.
+
+#### Cross Compilation
+* Requires libraries on the developer's machine for each of the destination targets.
+* Can be very complicated to set up.
+
+#### LLVM Invoker
+* Will work on any target platform that LLVM and the LLVM Invoker support.
+* Is very lightweight in distributable size.
+* Requires the end user to have LLVM installed in order to run the program.
+* Is not guaranteed to run on the end user's computer if unsupported libraries are used.
+* Utilizes pre-compiled executables, so there is no compilation to an executable.
+
+#### Bare Metal
+* Will always work as long as the bootloader and the compiled assembly language match the target machine's.
+* Must take into account different memory addresses for computer hardware for different systems.
