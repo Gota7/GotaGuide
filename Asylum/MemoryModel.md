@@ -195,3 +195,4 @@ pub unsafe fn main() {
     MyStruct* dp -> s; // This will try and take ownership of s, but will not since s is unsafe.
     delete s; // Memory must be automatically deleted when handling unsafe pointers.
 }
+```
