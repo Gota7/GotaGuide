@@ -60,16 +60,16 @@ What if you wanted to treat a DP like a pointer though, and get or set it's addr
 ```rust
 u32 value1 = 3;
 u32 value2 = 7;
-u32* @dp = &value1; // Same thing as u32* dp -> value1;
+u32* @dp = &value1; // Same thing as u32* dp -> value1, except ownership is not transferred.
 println(dp);
 println(@dp);
 dp = 5;
 println(dp);
 println(@dp);
-@dp = &value2; // Same thing as dp -> value2;
+@dp = &value2; // Same thing as dp -> value2, except ownership is not transferred.
 println(dp);
 println(@dp);
-u32* @otherDP = @dp; // Same thing as u32* otherDP -> dp.
+u32* @otherDP = @dp; // Same thing as u32* otherDP -> dp, except ownership is not transferred.
 println(@otherDP);
 ```
 Output:
@@ -82,7 +82,7 @@ Output:
 4050186048
 4050186048
 ```
-Notice how you are also allowed to assign what a DP points to using `@` as well. Also take into account that printing the address a DP refers to prints a location in memory rather than a value.
+Notice how you are also allowed to assign what a DP points to using `@` as well. Also take into account that printing the address a DP refers to prints a location in memory rather than a value. Please see [Memory Model](MemoryModel.md) for implications about ownership.
 
 ### The Dereference Operator (*)
 There are rare cases where you may want to access a value, but it is behind multiple DPs. The dereference operator `*` allows you to get a value from this. Take into account the following example:
@@ -147,11 +147,11 @@ It's also possible to skip the middle man, and just have a DP refer to a newly c
 ```rust
 MyStruct* dat -> new MyStruct();
 ```
-This is explained more when talking about how memory works in Asylum, but any item created this way is heap allocated and dies when the user frees it. Although you can allocate data on the stack like such:
+This is explained more when talking about how memory works in Asylum, but any item created this way is heap allocated and dies when the owner is out of scope. Although, you can allocate data on the stack like such:
 ```rust
 MyStruct* data -> MyStruct();
 ```
-This is the equivalent of making an instance of a struct, then a DP directly too it afterwards.
+This is the equivalent of making an instance of a struct, then a DP directly too it afterwards. Please see [Memory Model](MemoryModel.md) for implications about ownership.
 
 ## Unsafe Diet Pointers
 By default, Asylum does not let you do any of the traditional pointer math that C and C++ allow. However, you can make DPs act like fully fledged pointers in an unsafe context:
