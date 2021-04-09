@@ -150,8 +150,13 @@ What, none of this makes sense? It may seem that this has nothing to do with wri
 ## Enough With The Rules, Let's See Some Code!
 TODO!!!
 
+## No Dependencies
+Want to make your executable standalone? Easy! Just add the `static` flag, so that way the executable does not need any dynamic libraries. My command was: `clang TestMod.bc -o TestMod.elf -static`. Using the Linux `ldd` command on it will show that the executable does not depend on anything as it is not dynamic!
+
 ## Multiple Files
 TODO!!!
+
+(llvm-link makes program into one BC file, but it isn't needed by clang).
 
 ### The Compilation Script
 We have LLVM bitcode now, so what? The great news is that the clang compiler can automatically convert this into an executeable! Simply use the command `clang HelloWorld.bc -o HelloWorld.elf` (or exe for Windows), and you should be able to get a program you can run! You can also add the `-static` flag to compile it to not use any external dependencies.
@@ -205,4 +210,53 @@ The first line makes an ELF from our bitcode. The 2nd one copies to the OS folde
 It's not much, but from there you can theoretically build an entire operating system using your custom language!
 
 ## Cross Compilation
-TODO!!!
+When compiling for another target, you use what is called a target triple. For this example, I will be targetting Windows. Since I am targetting an x86_64 target, my flag is `-target x86_64-pc-windows-gnu`. For a full list of target triples, see this page [here](https://llvm.org/doxygen/classllvm_1_1Triple.html). This [page](https://clang.llvm.org/docs/CrossCompilation.html) is also helpful. While I am compiling for Windows on a Linux machine, this should be able to applied to other combinations.
+
+### Install Packages
+If you try and run the command `clang TestMod.bc -o TestMod.exe -target x86_64-pc-win32-gnu -fuse-ld=lld`, it will fail! The fuse command is to make sure we are using LLVM's linker instead of the systems. The reason for this failure is that you need actual Windows libraries to link with (as you are targetting Windows). Luckily, this can easily be done with `sudo apt-get install mingw-w64`. Now it will work all of a sudden!
+
+### Without Packages
+After installing the libraries with the command above, you probably are wondering how you can compile without requiring a package. To do this, you need to copy two folders and place them next to each other in a convenient location, `/usr/x86_64-w64-mingw32/lib/` and `/lib/gcc/x86_64-w64-mingw32/9.3-win32/`. These have everything you need to generate a Windows executable. I will name the first one the `win` folder, and the 2nd one the `9.3-win32` folder. You should also uninstall the `mingw-64` package and then run `sudo apt-get autoremove` to ensure this setup is standalone. I had my `.bc` file in the same location as these two folders. I than cd'd into the `win` folder and ran this command: `clang ../TestMod.bc -o ../TestMod.exe -target x86_64-pc-win32-gnu -L . -L ../9.3-win32/ -fuse-ld=lld`. For some reason, the clang command is hardcoded to take the directory of the `win` folder as it has hardcoded object paths. The `-L` flag is used to include the current directory, and the `9.3-win32` folder in order to use all the packages that are required.
+
+## Cheating Cross Compilation
+What if you wanted to compile to another platform without the hassle? At the moment, I do not know of such a way. And having the user compile or convert anything is really messy, and requires them to have development tools. So if we don't want developers to download massive libraries for cross-compilation or for end users to install anything, what do we do?
+
+### The Other Way
+We are currently forgetting the fact that LLVM creates *bitcode* which is only as platform dependent as the functions it uses. Any platform LLVM supports can convert this bitcode to assembly and run it. But wait, we don't want the user to run raw assembly! But LLVM has this tool called *lli* which can run an LLVM bitcode file, much like how Java and C# and ran in a virtual machine: it uses a JIT (Just In Time) compiler to convert LLVM instructions into raw machine code you can execute. So if we were to have this *lli* tool on the target machine, and just give the end user an executable that simply calls it to run our `.bc` file, we are good to go! For more information and targets, check out my github repo [here](https://github.com/Gota7/LLVM-Invoker). This allows us to be able to instantly run our code on any platform without any cross compilation! The only catch is you can only use functions available for the target system.
+
+## Comparison
+A comparison summarizing the different methods of compiling a program with LLVM.
+
+### Compilation Modes
+This covers whether or not an executable is static or dynamically compiled and linked.
+
+#### Dynamic Compilation (Default)
+* Will work on the developer's computer, but may not work on others.
+* End user must have all the external libraries the program used installed.
+* Is fairly lightweight in distributable size.
+
+#### Static Compilation (-static Flag)
+* Will work on other systems regardless of what they have installed.
+* Has a larget distributable size.
+
+### Targetting Method
+And of course there are different ways to target platforms. This is used in Tandem with the compilation mode.
+
+#### Default (Host)
+* Will work on the platform the developer is compiling on, and all other machines of the same platform.
+* Requires multiple devices or virtual machines to support other targets.
+
+#### Cross Compilation
+* Requires libraries on the developer's machine for each of the destination targets.
+* Can be very complicated to set up.
+
+#### LLVM Invoker
+* Will work on any target platform that LLVM and the LLVM Invoker support.
+* Is very lightweight in distributable size.
+* Requires the end user to have LLVM installed in order to run the program.
+* Is not guaranteed to run on the end user's computer if unsupported libraries are used.
+* Utilizes pre-compiled executables, so there is no compilation to an executable.
+
+#### Bare Metal
+* Will always work as long as the bootloader and the compiled assembly language match the target machine's.
+* Must take into account different memory addresses for computer hardware for different systems.
