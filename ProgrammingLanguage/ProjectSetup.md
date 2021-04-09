@@ -2,14 +2,14 @@
 Ever wanted to create your own programming language?
 
 ## Table Of Contents
-* [Index](index.md)
-* [ANTLR4 Setup](antlrSetup.md)
-* [ANTLR4 Grammar](grammar.md)
-* [Creating Toylet](creatingToylet.md)
-* [Project Setup](projectSetup.md) <- You are here.
-* [LLVM Crashcourse](llvm.md)
-* [Compiling Toylet](compilingToylet.md)
-* [Epilogue](epilogue.md)
+* [Index](Index.md)
+* [ANTLR4 Setup](AntlrSetup.md)
+* [ANTLR4 Grammar](Grammar.md)
+* [Creating Toylet](CreatingToylet.md)
+* [Project Setup](ProjectSetup.md) <- You are here.
+* [LLVM Crashcourse](Llvm.md)
+* [Compiling Toylet](CompilingToylet.md)
+* [Epilogue](Epilogue.md)
 
 ## Required Tools
 As you probably guessed, we are going to need a lot more than ANTLR4 to make a programming language. Now I will list out everything you need.
@@ -70,4 +70,4 @@ You should notice that it is complaining about how the Visitor class does not im
 So far I have just been telling you to do things without really explaining, but it's hard to until this point. If you look at the names of the functions, a lot of them should look familiar. This is because these are all the Rules you defined in your grammar file, with a few new functions added. When we will tell our compiler to compile a file, it will first break it into an Abstract Syntax Tree using those C# files ANTLR generated for us. Why this is important, is because it will do things in order. Say we have a line of code such as `number one = 3 - 2 * 1;` We will first visit the variable declaration Rule, then visit the number expression Rule recursively. Eventually, we will get to the operation `2 * 1`. When visiting this node, our goal is to return the result of the operation (the VisitResult class defined above will store any data we need). Then we can return something for `3 - 2 * 1` since the value of `2 * 1` is returned, you get the point. Since when generating assembly-like code with LLVM, we need to make code for what needs to be done first first, this means we will be generating code in the order we should be!
 
 ## Next
-Before we make our final compiler, we first have to learn LLVM, what it does, and how it works. So far we have learned how to read, but now it is time for us to learn how to write: [LLVM Crashcourse](llvm.md)
+Before we make our final compiler, we first have to learn LLVM, what it does, and how it works. So far we have learned how to read, but now it is time for us to learn how to write: [LLVM Crashcourse](Llvm.md)

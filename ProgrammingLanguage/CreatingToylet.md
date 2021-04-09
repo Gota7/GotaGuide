@@ -2,14 +2,14 @@
 Ever wanted to create your own programming language?
 
 ## Table Of Contents
-* [Index](index.md)
-* [ANTLR4 Setup](antlrSetup.md)
-* [ANTLR4 Grammar](grammar.md)
-* [Creating Toylet](creatingToylet.md) <- You are here.
-* [Project Setup](projectSetup.md)
-* [LLVM Crashcourse](llvm.md)
-* [Compiling Toylet](compilingToylet.md)
-* [Epilogue](epilogue.md)
+* [Index](Index.md)
+* [ANTLR4 Setup](AntlrSetup.md)
+* [ANTLR4 Grammar](Grammar.md)
+* [Creating Toylet](CreatingToylet.md) <- You are here.
+* [Project Setup](ProjectSetup.md)
+* [LLVM Crashcourse](Llvm.md)
+* [Compiling Toylet](CompilingToylet.md)
+* [Epilogue](Epilogue.md)
 
 ## Introduction
 Hello, this is Gota7. Before we have been doing some setup and some learning, but now it is time to actually do the work. Well, I sure hope you did the setup and learning in the previous pages. If not, slap yourself in the face and go read them now, not skim them, read and understand them. I'm not going to be making this Toylet language, *you* are. How could you possibly make your own language if you refuse to walk with me, as I show you how you could potentially make it? No way in the world are you going to be able to make a big complex language without some practice on something simpler first, so please follow along. That is also why there is no code you will just be able to copy and paste at the end wahahaha.
@@ -491,4 +491,4 @@ Hopefully this last part was the home stretch. It has been quite the journey dev
 Conglaturation!!! You have successfully implemented the Toylet language grammer! Now you should be able to parse any Toylet code that is syntactically valid. Try it yourself, and see the pretty trees!
 
 ## Next
-Next thing to do is to set up our C# project to use our ANTLR grammar, and to get ready for LLVM. If you thought this part was hard, well it only gets more confusing: [Project Setup](projectSetup.md)
+Next thing to do is to set up our C# project to use our ANTLR grammar, and to get ready for LLVM. If you thought this part was hard, well it only gets more confusing: [Project Setup](ProjectSetup.md)

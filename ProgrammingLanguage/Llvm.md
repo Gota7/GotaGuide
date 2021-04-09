@@ -2,14 +2,14 @@
 Ever wanted to create your own programming language?
 
 ## Table Of Contents
-* [Index](index.md)
-* [ANTLR4 Setup](antlrSetup.md)
-* [ANTLR4 Grammar](grammar.md)
-* [Creating Toylet](creatingToylet.md)
-* [Project Setup](projectSetup.md)
-* [LLVM Crashcourse](llvm.md) <- You are here.
-* [Compiling Toylet](compilingToylet.md)
-* [Epilogue](epilogue.md)
+* [Index](Index.md)
+* [ANTLR4 Setup](AntlrSetup.md)
+* [ANTLR4 Grammar](Grammar.md)
+* [Creating Toylet](CreatingToylet.md)
+* [Project Setup](ProjectSetup.md)
+* [LLVM Crashcourse](Llvm.md) <- You are here.
+* [Compiling Toylet](CompilingToylet.md)
+* [Epilogue](Epilogue.md)
 
 ## Introduction
 Hello, this is Gota7, and today I'm going to teach you how to use the LLVM or *Low Level Virtual Machine* API. When working with the LLVM API, we are using a level language like C, C#, etc. to write a low level language called LLVM IR. If you want to see the kind of madness we will be generating, look [here](https://github.com/Virtual-Machine/ir-examples/tree/master/ll). Believe me, I don't understand the syntax either, no one should be subjected to learn it. The reason why is that this is because it is for *computers* to write, not humans. We instead get to write the code that writes that code.
@@ -260,3 +260,7 @@ And of course there are different ways to target platforms. This is used in Tand
 #### Bare Metal
 * Will always work as long as the bootloader and the compiled assembly language match the target machine's.
 * Must take into account different memory addresses for computer hardware for different systems.
+
+## Next
+This was a lot of LLVM theory and such, but hopefully you understood the basics and can write some general LLVM generation code. In the next part, we will do the moment we have all been waiting for: compiling Toylet into an executable!
+[Compiling Toylet](CompilingToylet.md)

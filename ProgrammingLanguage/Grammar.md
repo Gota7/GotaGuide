@@ -2,14 +2,14 @@
 Ever wanted to create your own programming language?
 
 ## Table Of Contents
-* [Index](index.md)
-* [ANTLR4 Setup](antlrSetup.md)
-* [ANTLR4 Grammar](grammar.md) <- You are here.
-* [Creating Toylet](creatingToylet.md)
-* [Project Setup](projectSetup.md)
-* [LLVM Crashcourse](llvm.md)
-* [Compiling Toylet](compilingToylet.md)
-* [Epilogue](epilogue.md)
+* [Index](Index.md)
+* [ANTLR4 Setup](AntlrSetup.md)
+* [ANTLR4 Grammar](Grammar.md) <- You are here.
+* [Creating Toylet](CreatingToylet.md)
+* [Project Setup](ProjectSetup.md)
+* [LLVM Crashcourse](Llvm.md)
+* [Compiling Toylet](CompilingToylet.md)
+* [Epilogue](Epilogue.md)
 
 ## Setting Up
 ![alt text](GrammarFileList.png "Folder Layout")
@@ -362,4 +362,4 @@ Recall the section about ANTLR's structure. You want dependencies of definitions
 
 ## Next
 That was a lot of information to take in! But hopefully you should understand how to use ANTLR enough to try it out on your own. Remember, "What I cannot create, I do not understand" - Richard Feynman. In the next section, we will start building the syntax for our Toylet language!
-[Creating Toylet](creatingToylet.md)
+[Creating Toylet](CreatingToylet.md)
