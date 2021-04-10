@@ -191,3 +191,35 @@ x is 3.
 x is 5.
 x is 7.
 ```
+
+###### DP Iterators
+Sometimes you want to modify the value within the collection itself without copying it. This can be done using DP Iterators, which simply use a DP instead of the given type.
+```rust
+pub fn main() {
+    List<u32> vals1 = { 0, 3, 5, 7 };
+    List<u32> vals2 = { 0, 3, 5, 7 };
+    for (u32 x in vals1) {
+        x = 0;
+    }
+    for (u32* x in vals2) {
+        x = 0;
+    }
+    for (u32 x in vals1) {
+        println("x in vals1 is %d.", x);
+    }
+    for (u32 x in vals2) {
+        println("x in vals2 is %d.", x);
+    }
+}
+```
+Output:
+```
+x in vals1 is 0.
+x in vals1 is 3.
+x in vals1 is 5.
+x in vals1 is 7.
+x in vals2 is 0.
+x in vals2 is 0.
+x in vals2 is 0.
+x in vals2 is 0.
+```
