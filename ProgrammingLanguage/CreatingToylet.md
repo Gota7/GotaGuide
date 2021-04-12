@@ -12,7 +12,7 @@ Ever wanted to create your own programming language?
 * [Epilogue](Epilogue.md)
 
 ## Introduction
-Hello, this is Gota7. Before we have been doing some setup and some learning, but now it is time to actually do the work. Well, I sure hope you did the setup and learning in the previous pages. If not, slap yourself in the face and go read them now, not skim them, read and understand them. I'm not going to be making this Toylet language, *you* are. How could you possibly make your own language if you refuse to walk with me, as I show you how you could potentially make it? No way in the world are you going to be able to make a big complex language without some practice on something simpler first, so please follow along. That is also why there is no code you will just be able to copy and paste at the end wahahaha.
+Hello, this is Gota7. Before we have been doing some setup and some learning, but now it is time to actually do the work. Well, I sure hope you did the setup and learning in the previous pages. If not, slap yourself in the face and go read them now, not skim them, read and understand them as it will help you here. It will benefit you to try and practice making a simple language with me first in order to make something more complicated in the end. For your sake, there will be no final code for you to copy paste. :}
 
 ## So Uh, How Do We Begin?
 Great question! Let's first take a look at some sample Toylet code from earier:
