@@ -195,16 +195,18 @@ x is 7.
 ###### DP Iterators
 Sometimes you want to modify the value within the collection itself without copying it. This can be done using DP Iterators, which simply use a DP instead of the given type.
 ```rust
+using ASL.Collections;
+
 pub fn main() {
     List<u32> vals1 = { 0, 3, 5, 7 };
     List<u32> vals2 = { 0, 3, 5, 7 };
-    for (u32 x in vals1) {
+    for (u32 x in vals1) { // Try setting each value in the list. Since x is a copy for this first loop, it is independent of the list.
         x = 0;
     }
-    for (u32* x in vals2) {
+    for (u32* x in vals2) { // Now we are setting a value pointed to a by a diet pointer, which will modify the list.
         x = 0;
     }
-    for (u32 x in vals1) {
+    for (u32 x in vals1) { // Now we start printing each list.
         println("x in vals1 is %d.", x);
     }
     for (u32 x in vals2) {
