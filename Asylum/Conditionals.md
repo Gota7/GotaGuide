@@ -214,3 +214,23 @@ Output:
 ```
 I'm 5, 6, or 7!
 ```
+
+#### Switch Case With Lambdas
+You can also use lambda expressions in a switch case to allow probing the value being switched. This allows you to evaluate a boolean expression using the variable.
+```rust
+pub fn main() {
+    u32 num = 7;
+    switch (num => x) {
+        case x % 2 == 1:
+            println("I'm odd!");
+            break;
+        default:
+            println("I'm even!");
+            break;
+    }
+}
+```
+Output:
+```
+I'm odd!
+```

@@ -7,12 +7,12 @@ Sometimes you have code that will only run on a certain target, be it due to dif
 ### Attributes
 In Asylum, you can use attributes to declare functions, structs, and even namespaces as working only for a specific platform. This is the recommended way. Also notice that only one possible definition at most can exist for a given target. If a function is declared to have a target for windows, and another one of the same name and parameters has a target of x86_64, this leads to a multiple definition as it is possible for a system to be both windows and x86_64 at the same time.
 ```rust
-[Target(windows)]
+[Target("windows")]
 pub fn myFunction() {
     println("Hello Windows!");
 }
 
-[Target(armhf-linux)]
+[Target("armhf-linux")]
 pub fn myFunction() {
     println("Hello ARM Linux!");
 }
