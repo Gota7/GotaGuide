@@ -13,6 +13,7 @@ pub enum SomeState {
 pub fn main() {
     SomeState state = SomeState.Active; // Set our state to active.
     state = (SomeState)3; // This does the same thing as the above statement.
+    state = .Active; // Since we already declared our state variable as a SomeState, this can infer the enum type.
     switch(state) {
         case Inactive:
             println("State is inactive.");
