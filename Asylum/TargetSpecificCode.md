@@ -26,9 +26,9 @@ pub fn main() {
 Another way to declare target specific stuff is within a function itself with constant expressions. This is useful if there are extra steps needed for only certain platforms or have certain platforms share code, but in most cases it is recommended to have different functions for different targets altogether using attributes as shown above. This code achieves the same thing:
 ```rust
 pub fn main() {
-    if constexpr(WINDOWS) {
+    constexpr if (WINDOWS) {
         println("Hello Windows!");
-    } else if constexpr(ARMHF && LINUX) {
+    } else if (ARMHF && LINUX) {
         println("Hello ARM Linux!");
     }
 }
