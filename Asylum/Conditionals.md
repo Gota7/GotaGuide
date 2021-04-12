@@ -9,6 +9,7 @@ Let us define a few basic comparison operators, which will return `true` if true
 
 #### Number / Decimals
 Any number of any kind is `true` as long as it is not equal to `0`.
+
 | Value | Result |
 |-------|--------|
 | 0 | 0 |
@@ -16,6 +17,7 @@ Any number of any kind is `true` as long as it is not equal to `0`.
 
 #### Strings
 A string is regarded as `true`, as long as it is not empty `""`.
+
 | Value | Result |
 |-------|--------|
 | "" | 0 |
@@ -23,6 +25,7 @@ A string is regarded as `true`, as long as it is not empty `""`.
 
 #### Not (!)
 If `a` is true, then `!a` produces false. If `a` is false, `!a` produces true.
+
 | A | Result |
 |-------|--------|
 | 0 | 1 |
@@ -30,6 +33,7 @@ If `a` is true, then `!a` produces false. If `a` is false, `!a` produces true.
 
 #### And (&&)
 In `a && b`, both values must be true in order for this to be true.
+
 | A | B | Result |
 |---|---|--------|
 | 0 | X | 0 |
@@ -38,6 +42,7 @@ In `a && b`, both values must be true in order for this to be true.
 
 #### Or (||)
 In `a || b`, either value can be true in order for this to be true.
+
 | A | B | Result |
 |---|---|--------|
 | 0 | 0 | 0 |
@@ -46,6 +51,7 @@ In `a || b`, either value can be true in order for this to be true.
 
 #### Equals (==)
 In `a == b`, if `a` and `b` share the same value, this expression is true. Unlike some programming languages, this applies to strings as well.
+
 | A | B | Result |
 |---|---|--------|
 | 0 | 0 | 1 |
@@ -55,6 +61,7 @@ In `a == b`, if `a` and `b` share the same value, this expression is true. Unlik
 
 #### Not Equals (!=)
 In `a != b`, this expression is true only if `a` and `b` don't share the same value.
+
 | A | B | Result |
 |---|---|--------|
 | 0 | 0 | 0 |
@@ -64,6 +71,7 @@ In `a != b`, this expression is true only if `a` and `b` don't share the same va
 
 #### Less Than (<)
 In `a < b`, this expression is true only if `a` has a smaller value than `b`, or is first in alphabetical order for strings.
+
 | A | B | Result |
 |---|---|--------|
 | 0 | 0 | 0 |
@@ -72,6 +80,7 @@ In `a < b`, this expression is true only if `a` has a smaller value than `b`, or
 
 #### Greater Than (>)
 In `a > b`, this expression is true only if `a` has a greater value than `b`, or is later in alphabetical order for strings.
+
 | A | B | Result |
 |---|---|--------|
 | 0 | X | 0 |
@@ -80,6 +89,7 @@ In `a > b`, this expression is true only if `a` has a greater value than `b`, or
 
 #### Less Than Or Equal To (<=)
 In `a <= b`, this expression is true only if `a` has a smaller value or equal value compared to `b`, or is first in alphabetical order for strings.
+
 | A | B | Result |
 |---|---|--------|
 | 0 | X | 1 |
@@ -88,6 +98,7 @@ In `a <= b`, this expression is true only if `a` has a smaller value or equal va
 
 #### Greater Than Or Equal To (>=)
 In `a >= b`, this expression is true only if `a` has a greater value or equal value compared to `b`, or is later in alphabetical order for strings.
+
 | A | B | Result |
 |---|---|--------|
 | 0 | 0 | 1 |
